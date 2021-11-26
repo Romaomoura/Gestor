@@ -85,7 +85,7 @@ public class LancamentoRepositorioTest {
 
     }
 
-    private static Lancamento criarLancamento() {
+    public static Lancamento criarLancamento() {
 		return  Lancamento.builder()
                                     .ano(2019)
                                     .mes(1)
@@ -98,7 +98,7 @@ public class LancamentoRepositorioTest {
     
     }
 
-    private Lancamento criarEPersistirUmLancamento() {
+    public Lancamento criarEPersistirUmLancamento() {
         Lancamento lancamento = criarLancamento();
         entityManager.persist(lancamento);
         return lancamento;
