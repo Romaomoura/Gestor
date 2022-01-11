@@ -103,10 +103,38 @@ public class LancamentoServicoImplementacao implements LancamentoServico {
 
     @Override
     @Transactional(readOnly = true)
+    public BigDecimal obterSaldoPorTipoLancamentoReceita(Long id) {
+        
+        BigDecimal receitas = lancamentoRep.obterSaldoPorTipoLancamentoUsuarioEStatus(id, TipoLancamento.RECEITA, StatusLancamento.EFETIVADO);
+        
+        if(receitas == null) {
+            receitas = BigDecimal.ZERO;
+        }
+
+
+        return receitas;
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public BigDecimal obterSaldoPorTipoLancamentoDespesa(Long id) {
+        
+        BigDecimal despesas = lancamentoRep.obterSaldoPorTipoLancamentoUsuarioEStatus(id, TipoLancamento.DESPESA, StatusLancamento.EFETIVADO);
+
+        if(despesas == null) {
+            despesas = BigDecimal.ZERO;
+        }
+
+        return despesas;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public BigDecimal obterSaldoPorTipoLancamentoUsuario(Long id) {
         
-        BigDecimal receitas = lancamentoRep.obterSaldoPorTipoLancamentoUsuario(id, TipoLancamento.RECEITA);
-        BigDecimal despesas = lancamentoRep.obterSaldoPorTipoLancamentoUsuario(id, TipoLancamento.DESPESA);
+        BigDecimal receitas = lancamentoRep.obterSaldoPorTipoLancamentoUsuarioEStatus(id, TipoLancamento.RECEITA, StatusLancamento.EFETIVADO);
+        BigDecimal despesas = lancamentoRep.obterSaldoPorTipoLancamentoUsuarioEStatus(id, TipoLancamento.DESPESA, StatusLancamento.EFETIVADO);
         
         if(receitas == null) {
             receitas = BigDecimal.ZERO;

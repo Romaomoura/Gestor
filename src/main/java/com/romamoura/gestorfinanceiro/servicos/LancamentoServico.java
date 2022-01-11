@@ -17,5 +17,8 @@ public interface LancamentoServico {
     void validar(Lancamento lancamento);
     Optional<Lancamento> obterPorId(Long id);
     BigDecimal obterSaldoPorTipoLancamentoUsuario(Long id);
+    BigDecimal obterSaldoPorTipoLancamentoReceita(Long id);
+    BigDecimal obterSaldoPorTipoLancamentoDespesa(Long id);
+    
 
 }

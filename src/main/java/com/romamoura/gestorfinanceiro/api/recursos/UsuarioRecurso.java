@@ -57,6 +57,31 @@ public class UsuarioRecurso {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
 	}
+	@GetMapping("{id}/receitas")
+	public ResponseEntity obterSaldoReceitas(@PathVariable("id") Long id){
+		Optional<Usuario> usuario = usuarioServico.obterPorId(id);
+
+		if(!usuario.isPresent()){
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+
+		BigDecimal saldo = lancamentoServico.obterSaldoPorTipoLancamentoReceita(id);
+		return ResponseEntity.ok(saldo);
+
+	}
+
+	@GetMapping("{id}/despesas")
+	public ResponseEntity obterSaldoDespesas(@PathVariable("id") Long id){
+		Optional<Usuario> usuario = usuarioServico.obterPorId(id);
+
+		if(!usuario.isPresent()){
+			return new ResponseEntity(HttpStatus.NOT_FOUND);
+		}
+
+		BigDecimal saldo = lancamentoServico.obterSaldoPorTipoLancamentoDespesa(id);
+		return ResponseEntity.ok(saldo);
+
+	}
 	
 	@GetMapping("{id}/saldo")
 	public ResponseEntity obterSaldo(@PathVariable("id") Long id){

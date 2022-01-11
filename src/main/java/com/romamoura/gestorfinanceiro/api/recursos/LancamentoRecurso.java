@@ -54,7 +54,7 @@ public class LancamentoRecurso {
 
     @GetMapping("{id}")
     public ResponseEntity BuscarLancamentoPorId(@PathVariable("id") Long id){
-      return   lancamentoServico.obterPorId(id).map( lancamento -> new ResponseEntity(converter(lancamento), HttpStatus.OK) 
+      return   lancamentoServico.obterPorId(id).map( lancamento -> new ResponseEntity(converterDTO(lancamento), HttpStatus.OK) 
                             ).orElseGet(() -> new ResponseEntity(HttpStatus.NOT_FOUND) );
     }
 
@@ -127,7 +127,7 @@ public class LancamentoRecurso {
 
     }
 
-    private LancamentoDTO converter(Lancamento lancamento) {
+    private LancamentoDTO converterDTO(Lancamento lancamento) {
         return LancamentoDTO.builder()
                           .id(lancamento.getId())
                           .descricao(lancamento.getDescricao())
