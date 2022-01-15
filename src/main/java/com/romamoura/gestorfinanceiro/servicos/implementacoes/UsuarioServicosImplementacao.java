@@ -2,6 +2,7 @@ package com.romamoura.gestorfinanceiro.servicos.implementacoes;
 
 import java.util.Optional;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +16,12 @@ import com.romamoura.gestorfinanceiro.servicos.UsuarioServico;
 public class UsuarioServicosImplementacao implements UsuarioServico{
 	
 	private UsuarioRepositorio usuarioRep;
+	private PasswordEncoder encoder;
 	
-	public UsuarioServicosImplementacao(UsuarioRepositorio usuarioRep) {
+	public UsuarioServicosImplementacao(UsuarioRepositorio usuarioRep, PasswordEncoder encoder) {
 		super();
 		this.usuarioRep = usuarioRep;
+		this.encoder = encoder;
 	}
 
 	@Override
@@ -29,8 +32,10 @@ public class UsuarioServicosImplementacao implements UsuarioServico{
 		if(!usuario.isPresent()) {
 			throw new ErroAutenticacao("Usuário não encontrado para o email informado.");
 		}
+
+		boolean verificarSenha = encoder.matches(senha, usuario.get().getSenha());
 		
-		if(!usuario.get().getSenha().equals(senha)) {
+		if(!verificarSenha) {
 			throw new ErroAutenticacao("Senha inválida.");
 		}
 		
@@ -41,7 +46,14 @@ public class UsuarioServicosImplementacao implements UsuarioServico{
 	@Transactional
 	public Usuario salvarUsuario(Usuario usuario) {
 		validarEmail(usuario.getEmail());
+		criptografarSenha(usuario);
 		return usuarioRep.save(usuario);
+	}
+
+	private void criptografarSenha(Usuario usuario) {
+		String senha = usuario.getSenha();
+		String senhaHash = encoder.encode(senha);
+		usuario.setSenha(senhaHash);
 	}
 
 	@Override
