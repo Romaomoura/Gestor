@@ -3,9 +3,11 @@ package com.romamoura.gestorfinanceiro.api.recursos;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import com.romamoura.gestorfinanceiro.api.dto.TokenDTO;
 import com.romamoura.gestorfinanceiro.api.dto.UsuarioDTO;
 import com.romamoura.gestorfinanceiro.excessoes.ErroAutenticacao;
 import com.romamoura.gestorfinanceiro.modelos.entidades.Usuario;
+import com.romamoura.gestorfinanceiro.servicos.JwtService;
 import com.romamoura.gestorfinanceiro.servicos.LancamentoServico;
 import com.romamoura.gestorfinanceiro.servicos.UsuarioServico;
 
@@ -27,17 +29,17 @@ public class UsuarioRecurso {
 	 
     private final UsuarioServico usuarioServico;
 	private final LancamentoServico lancamentoServico;
-
-/* 	public UsuarioRecurso(UsuarioServico usuarioService){
-		this.usuarioService = usuarioService;
-	} */
+	private final JwtService jwtService;
 
 	@PostMapping("/autenticar")
-	public ResponseEntity autenticarUsuario( @RequestBody UsuarioDTO dto){
+	public ResponseEntity<?> autenticarUsuario( @RequestBody UsuarioDTO dto){
 		
 		try {
 			Usuario usuarioAutenticado = usuarioServico.autenticar(dto.getEmail(), dto.getSenha());
-			return ResponseEntity.ok(usuarioAutenticado);
+			String tokenUsuario = jwtService.gerarToken(usuarioAutenticado);
+
+			TokenDTO tokenDto = new TokenDTO(usuarioAutenticado.getNome(), tokenUsuario);
+			return ResponseEntity.ok(tokenDto);
 		} catch (ErroAutenticacao e) {
 			return ResponseEntity.badRequest().body(e.getMessage());
 		}
@@ -47,9 +49,9 @@ public class UsuarioRecurso {
 	public ResponseEntity salvarUsuario( @RequestBody UsuarioDTO dto) {
 		
 		Usuario usuario =  Usuario.builder()
-											.nome(dto.getNome())
-											.email(dto.getEmail())
-											.senha(dto.getSenha()).build();
+										.nome(dto.getNome())
+										.email(dto.getEmail())
+										.senha(dto.getSenha()).build();
 		try {
 			Usuario usuarioSalvo = usuarioServico.salvarUsuario(usuario);
 			return new ResponseEntity(usuarioSalvo, HttpStatus.CREATED);

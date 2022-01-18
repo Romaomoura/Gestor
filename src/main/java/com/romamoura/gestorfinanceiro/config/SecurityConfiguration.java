@@ -1,5 +1,10 @@
 package com.romamoura.gestorfinanceiro.config;
 
+import com.romamoura.gestorfinanceiro.api.JwtTokenFilter;
+import com.romamoura.gestorfinanceiro.servicos.JwtService;
+import com.romamoura.gestorfinanceiro.servicos.implementacoes.SecurityUserDetailsService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
@@ -19,15 +25,23 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return encoder;
     }
 
+    @Autowired
+    private SecurityUserDetailsService userDetailsService;
+
+    @Autowired
+    private JwtService jwtService;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
-        String senhaHash = passwordEncoder().encode("Romao1807");
+        auth
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(passwordEncoder());
+    }
 
-        auth.inMemoryAuthentication()
-                    .withUser("gfinc")
-                    .password(senhaHash)
-                    .roles("USER");
+    @Bean
+    public JwtTokenFilter jwtTokenFilter() {
+        return new JwtTokenFilter(jwtService, userDetailsService);
     }
 
     @Override
@@ -39,7 +53,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
         .and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // Não deixar salvar sessão de usuário em coockies.
-        .and().httpBasic();
-    }
-    
+        .and()
+            .addFilterBefore( jwtTokenFilter(), UsernamePasswordAuthenticationFilter.class );
+    }   
 }
