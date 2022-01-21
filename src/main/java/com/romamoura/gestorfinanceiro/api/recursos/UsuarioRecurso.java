@@ -61,7 +61,6 @@ public class UsuarioRecurso {
 	}
 	@GetMapping("{id}/receitas")
 	public ResponseEntity obterSaldoReceitas(@PathVariable("id") Long id){
-		System.out.println("idUsuarioReceitas >>>>> "+ id);
 		Optional<Usuario> usuario = usuarioServico.obterPorId(id);
 
 		if(!usuario.isPresent()){
