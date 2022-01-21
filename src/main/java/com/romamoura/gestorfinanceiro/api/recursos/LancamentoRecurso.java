@@ -36,11 +36,6 @@ public class LancamentoRecurso {
     private final LancamentoServico lancamentoServico;
     private final UsuarioServico usuarioServico;
 
-   /*  public LancamentoRecurso(LancamentoServico lancamentoServico, UsuarioServico usuarioServico){
-        this.lancamentoServico = lancamentoServico;
-        this.usuarioServico = usuarioServico;
-    } */
-
     @PostMapping
     public ResponseEntity salvarLancamento( @RequestBody LancamentoDTO lancamentoDTO) {
         try {
