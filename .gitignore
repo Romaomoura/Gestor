@@ -36,4 +36,4 @@ build/
 schema.sql
 
 ### configurações
-##application.properties
+application.properties
