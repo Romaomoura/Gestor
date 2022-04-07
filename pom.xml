@@ -73,13 +73,13 @@
 	<build>
 		<plugins>
 		  <plugin>
+			  <!-- <groupId>org.apache.maven.plugins</groupId>
+			  <artifactId>maven-source-plugin</artifactId> -->
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
 			<configuration>
 				<finalName>${project.gestorfinanceiro}</finalName>
 			</configuration>
-			<!-- <groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-source-plugin</artifactId> -->
 			<executions>
 			  <execution>
 				<goals>
