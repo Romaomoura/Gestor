@@ -1,0 +1,19 @@
+package com.romamoura.financialmanager.domain.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.romamoura.financialmanager.domain.entities.User;
+
+@Repository
+public interface UserRepository extends JpaRepository<User, Long>{
+
+	//Busca um email e o retorna
+	Optional<User> findByEmail(String email);
+	
+	//Verifica se o email existe na base de dados e retorna true ou false
+	boolean existsByEmail(String email);
+	
+}

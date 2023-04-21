@@ -9,12 +9,12 @@
 		<relativePath/> 
 	</parent>
 	<groupId>com.romamoura</groupId>
-	<artifactId>gestorfinanceiro</artifactId>
+	<artifactId>financialmanager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>gestorfinanceiro</name>
-	<description>Projeto para gerenciar minhas finanças</description>
+	<name>financialmanager</name>
+	<description>Project to manage my finances</description>
 	<properties>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
@@ -44,11 +44,11 @@
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <scope>test</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--		    <groupId>com.h2database</groupId>-->
+<!--		    <artifactId>h2</artifactId>-->
+<!--		    <scope>test</scope>-->
+<!--		</dependency>-->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-security</artifactId>
@@ -78,7 +78,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-maven-plugin</artifactId>
 			<configuration>
-				<finalName>${project.gestorfinanceiro}</finalName>
+				<finalName>${project.financialmanager}</finalName>
 			</configuration>
 			<executions>
 			  <execution>
